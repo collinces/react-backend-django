@@ -1,3 +1,5 @@
+# models is the representation of out data. it is another word for database tables
+# django works with SQL db
 from django.db import models
 
 
