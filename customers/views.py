@@ -2,13 +2,16 @@
 
 from customers.models import Customer
 from customers.serializers import CustomerSerializer
-from django.http import JsonResponse, Http404
-from rest_framework.decorators import api_view
+# from django.http import JsonResponse, Http404
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET', 'POST'])
+# adding api restriction to customers page
+@permission_classes([IsAuthenticated])
 def customers(request):
     # invoke serializer and return to client
     if request.method == 'GET':
@@ -17,6 +20,8 @@ def customers(request):
         return Response({'customers': serializer.data})
 
     elif request.method == 'POST':
+        # the post method here writes(add) data to database
+        # data base generates new customer id for us
         serializer = CustomerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -25,6 +30,8 @@ def customers(request):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
+# adding api restriction to customer page
+@permission_classes([IsAuthenticated])
 # api_view defines which methods are allowed in customer function below
 def customer(request, id):
     # invoke serializer and return to client
@@ -42,8 +49,11 @@ def customer(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     elif request.method == 'POST':
+        # the post method here modify data to database
+        # data refers to the current and data=request.data is the new data we are passing coming from request
         serializer = CustomerSerializer(data, data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid():  # if data has been serialize
             serializer.save()
             return Response({'customer': serializer.data})
+        # if serializer got failed throw error
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
