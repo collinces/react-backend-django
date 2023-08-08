@@ -33,16 +33,30 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
-    'rest_framework',
-    'customers',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # my apps
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'customers',
+
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTIFICATION_CLASSES': [
+        'rest_framework_simplejwt.authentification.JWTAuthentification',
+
+    ]
+
+}
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -57,13 +71,8 @@ MIDDLEWARE = [
 ]
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTIFICATION_CLASSES': (
-        'rest_framework_simplejwt.authentification.JWTAuthentification',),
-
-}
-
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+
 
 ROOT_URLCONF = 'customers.urls'
 

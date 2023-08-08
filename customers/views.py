@@ -2,16 +2,17 @@
 
 from customers.models import Customer
 from customers.serializers import CustomerSerializer
-# from django.http import JsonResponse, Http404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 @api_view(['GET', 'POST'])
-# adding api restriction to customers page
 @permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+# adding api restriction to customers page
 def customers(request):
     # invoke serializer and return to client
     if request.method == 'GET':
@@ -30,9 +31,10 @@ def customers(request):
 
 
 @api_view(['GET', 'POST', 'DELETE'])
-# adding api restriction to customer page
-@permission_classes([IsAuthenticated])
 # api_view defines which methods are allowed in customer function below
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+# adding api restriction to customer page
 def customer(request, id):
     # invoke serializer and return to client
     try:

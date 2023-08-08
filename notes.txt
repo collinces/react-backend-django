@@ -6,3 +6,7 @@
 
 	************* add dependency to requirement.txt file *********
 	--- pip freeze requirements.txt
+
+	******************* local storage*******************
+		a little database that stays in the local browser of the client. they are data you don't want to save in server but in client browser
+		example is a login token. those data disappear when you close your browser or shut down computer. 
